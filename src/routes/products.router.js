@@ -47,21 +47,21 @@ router.post("/", async (req, res) => {
 router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   const product = req.body;
-  if (
-    !product.title ||
-    !product.description ||
-    !product.code ||
-    !product.price ||
-    !product.stock ||
-    !product.category
-  ) {
-    return res.status(400).json({ message: "Requisição inválida" });
-  }
-  const index = await manager.putProduct(+pid, product);
-  if (index === -1) {
+  // if (
+  //   !product.title ||
+  //   !product.description ||
+  //   !product.code ||
+  //   !product.price ||
+  //   !product.stock ||
+  //   !product.category
+  // ) {
+  //   return res.status(400).json({ message: "Requisição inválida" });
+  // }
+  const result = await manager.putProduct(+pid, product);
+  if (result === 0) {
     return res.status(400).json({ Erro: "Produto não encontrado" });
   }
-  res.status(200).json({ Atualização: `Produto ${index} atualizado` });
+  res.status(200).json({ Atualização: `Produto ${pid} atualizado` });
 });
 
 router.delete("/:pid", async (req, res) => {

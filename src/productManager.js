@@ -29,13 +29,17 @@ class productManager {
     products.push(data);
     await this.#writeFile(products);
   };
-  putProduct = async (pid, product) => {
+  putProduct = async (pid, updates) => {
     const data = await this.#readFile();
-    const index = data.findIndex((product) => product.pid === +pid);
-    const newProduct = { pid: +pid, ...product };
-    data[index] = newProduct;
+    const product = data.find((product) => product.pid === +pid);
+    if (product) {
+      for (const [key, newValue] of Object.entries(updates)) {
+        product[key] = newValue;
+      }
+    } else {
+      return 0;
+    }
     await this.#writeFile(data);
-    return index;
   };
   deleteProduct = async (pid) => {
     const data = await this.#readFile();
