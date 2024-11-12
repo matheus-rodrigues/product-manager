@@ -47,16 +47,6 @@ router.post("/", async (req, res) => {
 router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   const product = req.body;
-  // if (
-  //   !product.title ||
-  //   !product.description ||
-  //   !product.code ||
-  //   !product.price ||
-  //   !product.stock ||
-  //   !product.category
-  // ) {
-  //   return res.status(400).json({ message: "Requisição inválida" });
-  // }
   const result = await manager.putProduct(+pid, product);
   if (result === 0) {
     return res.status(400).json({ Erro: "Produto não encontrado" });
