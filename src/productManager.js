@@ -28,6 +28,7 @@ class productManager {
     data.status = true;
     products.push(data);
     await this.#writeFile(products);
+    return products;
   };
   putProduct = async (pid, updates) => {
     const data = await this.#readFile();

@@ -12,9 +12,15 @@ router.get("/", async (req, res) => {
     for (let i = 0; i < limit; i++) {
       limitedProducts.push(products[i]);
     }
-    return res.status(200).json(limitedProducts);
+    return res.render("home", {
+      limitedProducts,
+      limit,
+    });
   }
-  res.status(200).json(products);
+  res.render("home", {
+    products,
+    limit,
+  });
 });
 
 router.get("/:pid", async (req, res) => {
@@ -23,25 +29,28 @@ router.get("/:pid", async (req, res) => {
   if (!product) {
     return res.status(404).json({ message: "Produto não encontrado" });
   }
-  res.status(200).json(product);
+  res.render("search", {
+    product,
+  });
 });
 
 router.post("/", async (req, res) => {
   const product = req.body;
-  if (
-    !product.title ||
-    !product.description ||
-    !product.code ||
-    !product.price ||
-    !product.stock ||
-    !product.category
-  ) {
-    return res.status(400).json({ message: "Requisição inválida" });
-  }
-  product.price = +product.price;
-  product.stock = +product.stock;
-  await manager.postProduct(product);
-  res.status(201).json(product);
+  // if (
+  //   !product.title ||
+  //   !product.description ||
+  //   !product.code ||
+  //   !product.price ||
+  //   !product.stock ||
+  //   !product.category
+  // ) {
+  //   return res.status(400).json({ message: "Requisição inválida" });
+  // }
+  // product.price = +product.price;
+  // product.stock = +product.stock;
+  const products = await manager.postProduct(product);
+
+  res.status(201).json(products);
 });
 
 router.put("/:pid", async (req, res) => {

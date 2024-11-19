@@ -1,9 +1,10 @@
 const fs = require("fs").promises;
 const Manager = require("./productManager.js");
+const _dirname = require("./utils.js");
 
 class cartManager {
   #productManager = new Manager();
-  #path = `${__dirname}/data/carts.json`;
+  #path = `${_dirname}/data/carts.json`;
   #encoder = "utf-8";
   constructor() {}
   #readFile = async () => {

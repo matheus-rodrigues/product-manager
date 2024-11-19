@@ -1,0 +1,20 @@
+<div>
+  <title>Produtos </title>
+    {{#if limit}}
+      {{#each limitedProducts}}
+        <ul>
+          <li>Nome: {{this.title}}</li>
+          <li>Preço: {{this.price}}</li>
+          <br>
+        </ul>
+      {{/each}}
+    {{else}}
+      {{#each products}}
+        <ul>
+          <li>Nome: {{this.title}}</li>
+          <li>Preço: {{this.price}}</li>
+          <br>
+        </ul>
+      {{/each}}
+    {{/if}}
+</div>
