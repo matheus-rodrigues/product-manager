@@ -1,23 +1,54 @@
 <div>
+  <h1>Cadastro de produtos</h1>
+  <input type="text" id="title" placeholder="Título do Produto">
+  <input type="text" id="description" placeholder="Descrição do Produto">
+  <input type="text" id="code" placeholder="Código do Produto">
+  <input type="number" id="price" placeholder="Preço do Produto">
+  <input type="number" id="stock" placeholder="Estoque do Produto">
+  <input type="text" id="category" placeholder="Categoria do Produto">
+  <button id="enviar"></button>
+</div>
+
+<div>
   <h1>produtos</h1>
   <ul id="products-list">
     {{#each products}}
-      <li>ID: {{this.pid}}, Produto: {{this.title}}</li>
+    <li>ID: {{this.pid}}, Produto: {{this.title}}</li>
     {{/each}}
   </ul>
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
+  const title = document.getElementById("title");
+  const description = document.getElementById("description");
+  const code = document.getElementById("code");
+  const price = document.getElementById("price");
+  const stock = document.getElementById("stock");
+  const category = document.getElementById("category");
+  const button = document.getElementById("enviar");
 
-socket.on("products", (products) => {
-  const productsList = document.getElementById("products-list");
-  productsList.innerHTML = "";
-
-  products.forEach((p) => {
-    const product = document.createElement("li");
-    product.textContent = `ID: ${p.pid}, Produto: ${p.title}`;
-    productsList.appendChild(product);
+  button.addEventListener("click", () => {
+    const obj = {
+      title: title.value,
+      description: description.value,
+      code: code.value,
+      price: price.value,
+      stock: stock.value,
+      category: category.value
+    }
+    socket.emit("products", obj);
   });
-});
+
+  socket.on("products", (products) => {
+    const productsList = document.getElementById("products-list");
+    productsList.innerHTML = "";
+
+    products.forEach((p) => {
+      const product = document.createElement("li");
+      product.textContent = `ID: ${p.pid}, Produto: ${p.title}`;
+      productsList.appendChild(product);
+    });
+  });
+
 </script>

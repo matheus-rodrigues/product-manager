@@ -2,7 +2,7 @@ const { Router } = require("express");
 const Manager = require("../productManager.js");
 const manager = new Manager();
 
-module.exports = (io) => {
+module.exports = (io, obj) => {
   const router = Router();
 
   router.get("/", async (req, res) => {
@@ -10,7 +10,7 @@ module.exports = (io) => {
     res.render("realTime", { products });
   });
   router.post("/", async (req, res) => {
-    const product = req.body;
+    const product = obj;
     if (
       !product.title ||
       !product.description ||
@@ -19,7 +19,7 @@ module.exports = (io) => {
       !product.stock ||
       !product.category
     ) {
-      return res.status(400).json({ message: "Requisição inválida" });
+      return res.status(400).json({ erro: "Requisição inválida." });
     }
     product.price = +product.price;
     product.stock = +product.stock;

@@ -7,7 +7,7 @@ const { Server } = require("socket.io");
 const http = require("http");
 const app = express();
 const realTimeRouter = require("./routes/realTime.router.js");
-
+const obj = {};
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,14 +18,20 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", _dirname + "/views");
 app.set("view engine", "handlebars");
 
-const socketRouter = realTimeRouter(io);
+const socketRouter = realTimeRouter(io, obj);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/realtimeproducts", socketRouter);
 
 io.on("connection", (socket) => {
   console.log("Usuário conectado");
-  socket.on("disconect", () => {
+  socket.on("products", (products) => {
+    Object.assign(obj, products);
+    fetch("http://localhost:8080/api/realtimeproducts", {
+      method: "POST",
+    });
+  });
+  socket.on("disconnect", () => {
     console.log("Usuário desconectado");
   });
 });
