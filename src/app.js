@@ -27,9 +27,16 @@ io.on("connection", (socket) => {
   console.log("Usuário conectado");
   socket.on("products", (products) => {
     Object.assign(obj, products);
-    fetch("http://localhost:8080/api/realtimeproducts", {
+    const options = {
+      hostname: "localhost",
+      port: 8080,
+      path: "/api/realtimeproducts",
       method: "POST",
+    };
+    const req = http.request(options, (res) => {
+      console.log(`Status: ${res.statusCode}`);
     });
+    req.end();
   });
   socket.on("disconnect", () => {
     console.log("Usuário desconectado");
